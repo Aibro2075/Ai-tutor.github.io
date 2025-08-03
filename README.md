@@ -1,2 +1,827 @@
 # Aibro2075.github.io
 Web-site about Ai-tutor
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI-репетитор — Английский и математика</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      --radius: 1rem;
+      --shadow: 0 14px 35px rgba(0,0,0,0.08);
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      background: #f0f4fb;
+      color: #1f2d3a;
+    }
+    * {box-sizing:border-box;}
+    body {margin:0; padding:0; line-height:1.45;}
+    header {
+      background: linear-gradient(135deg,#6366f1,#ec4899);
+      color:#fff;
+      padding:1.75rem 1rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 1rem 1rem 2rem;
+    }
+    h1 {margin:0; font-size:2rem;}
+    h2 {margin-top:0.25rem;}
+    .card {
+      background:#fff;
+      border-radius: 1rem;
+      padding:1.25rem 1.5rem;
+      box-shadow: var(--shadow);
+      margin-bottom:1.25rem;
+    }
+    .grid {display:grid; gap:1rem;}
+    .two {grid-template-columns: repeat(auto-fit,minmax(280px,1fr));}
+    button {
+      cursor:pointer;
+      border:none;
+      padding: .65rem 1rem;
+      border-radius: .75rem;
+      font-weight:600;
+      background: #6366f1;
+      color:#fff;
+      transition: filter .2s;
+    }
+    button:disabled {opacity:.55; cursor:not-allowed;}
+    button:hover {filter:brightness(1.07);}
+    select, textarea, input {
+      padding: .65rem .85rem;
+      border-radius: .55rem;
+      border:1px solid #d1d9e6;
+      width:100%;
+      font-size:1rem;
+      margin-top:4px;
+      resize: vertical;
+    }
+    .small {font-size:.82rem; color:#555;}
+    .badge {
+      display:inline-block;
+      background:#10b981;
+      color:#fff;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:.65rem;
+      margin-right:6px;
+    }
+    .pill {
+      display:inline-block;
+      background:#eef6ff;
+      padding:6px 14px;
+      border-radius:999px;
+      font-size:.65rem;
+      margin:2px 4px 2px 0;
+    }
+    .progress-bar {
+      background:#e5e9f2;
+      border-radius:999px;
+      overflow:hidden;
+      height:12px;
+      margin-top:6px;
+    }
+    .progress-inner {
+      height:100%;
+      background:#6366f1;
+      width:0%;
+      transition:width .3s;
+    }
+    .flex {display:flex; gap:1rem; align-items:start; flex-wrap:wrap;}
+    .tab-list {display:flex; flex-wrap:wrap; gap:4px; margin-bottom:12px;}
+    .tab {
+      padding:10px 16px;
+      border-radius:8px 8px 0 0;
+      background:#f3f7fd;
+      cursor:pointer;
+      font-weight:600;
+      position:relative;
+      font-size:.85rem;
+    }
+    .tab.active {
+      background:#fff;
+      box-shadow: inset 0 -3px 0 #6366f1;
+      color:#1f2d3a;
+    }
+    .tab-content {
+      display:none;
+      padding-top:8px;
+    }
+    .tab-content.active {display:block;}
+    .highlight {
+      background: #fffbe6;
+      padding:8px 12px;
+      border-left:4px solid #f59e0b;
+      border-radius:6px;
+    }
+    pre {
+      background:#f3f7fd;
+      padding:8px 12px;
+      border-radius:6px;
+      overflow-x:auto;
+    }
+    .role-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:10px;
+      margin-top:4px;
+    }
+    .tagline {font-size:.9rem; margin-top:4px; opacity:.9;}
+    footer {
+      text-align:center;
+      padding:1rem;
+      font-size:.75rem;
+      color:#6b7280;
+      margin-top:2rem;
+    }
+    .question-block {border:1px solid #e8ecf5; border-radius:8px; padding:10px; margin-bottom:10px; background:#f9fbff;}
+    .correct {color:#059669; font-weight:600;}
+    .wrong {color:#dc2626; font-weight:600;}
+    .badge-secondary {
+      background:#6366f1;
+      color:#fff;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:.6rem;
+      margin-right:4px;
+    }
+    .note {font-size:.75rem; background:#f0f4fb; padding:6px 10px; border-radius:6px; display:inline-block;}
+    .subject-switch {display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;}
+    .subject-btn {
+      padding:6px 14px;
+      border-radius:999px;
+      border:2px solid transparent;
+      background:#eef6ff;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .subject-btn.active {
+      background:#6366f1;
+      color:#fff;
+      border-color:#4f46e5;
+    }
+    @media (max-width:950px){
+      header {flex-direction:column; align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="flex:1; min-width:220px;">
+      <h1>AI-репетитор (Английский & Математика)</h1>
+      <div class="tagline">Главное — идея, исследования и масштабируемая архитектура. Тесты по двум предметам: английскому и математике.</div>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+      <div class="badge">Мультипредметный</div>
+      <div class="badge">Экзамены / Подготовка</div>
+      <div class="badge">Прототип</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Документация -->
+    <div class="card">
+      <h2>Полная документация проекта</h2>
+      <div class="small">Для жюри, команды и пользователей: почему это нужно, как работает и куда можно развивать.</div>
+
+      <div class="tab-list" role="tablist">
+        <div class="tab active" data-tab="problematika">1. Проблематика</div>
+        <div class="tab" data-tab="metody">2. Методы исследования</div>
+        <div class="tab" data-tab="masshtab">3. Масштабирование</div>
+        <div class="tab" data-tab="budushee">4. Будущие исследования</div>
+        <div class="tab" data-tab="polzovateli">5. Пользователи</div>
+        <div class="tab" data-tab="technologii">6. Обоснование технологий</div>
+        <div class="tab" data-tab="kreativ">7. Креатив</div>
+        <div class="tab" data-tab="komanda">8. Роли команды</div>
+        <div class="tab" data-tab="metrics">9. Метрики успеха</div>
+      </div>
+
+      <div class="tab-content active" id="problematika">
+        <h3>1. Проблематика</h3>
+        <ul>
+          <li>Однообразное обучение и отсутствие адаптации под сильные/слабые стороны ученика.</li>
+          <li>Недостаточная обратная связь: ошибки показываются, но не объясняются глубоко.</li>
+          <li>Сложность отслеживания прогресса по разным предметам в единой системе.</li>
+          <li>Низкая мотивация без персональных планов и видимых достижений.</li>
+          <li>Разные форматы экзаменов (язык и математика) требуют разной подготовки, которую сложно объединить.</li>
+          <li>Малое использование ИИ для анализа свободных ответов и генерации задач в реальном времени.</li>
+        </ul>
+        <div class="highlight">
+          Решение: единая платформа, объединяющая предметы, которая отслеживает прогресс, объясняет ошибки, адаптирует задачи и генерирует рекомендации с использованием современных подходов. 
+        </div>
+      </div>
+
+      <div class="tab-content" id="metody">
+        <h3>2. Методы исследования</h3>
+        <ul>
+          <li>Анализ форматов экзаменов по английскому и математике: структуру заданий, типы ошибок, требования к ответам.</li>
+          <li>Сбор данных от реальных пользователей: какие темы вызывают затруднения, повторяющиеся ошибки.</li>
+          <li>Классификация ошибок по предмету: грамматика/лексика/эссе и арифметика/алгебра/логика.</li>
+          <li>Рекомендательные модели: какие упражнения давать дальше на основе истории и слабых тем.</li>
+          <li>A/B тестирование разных стратегий повторения и сложности.</li>
+          <li>Поведенческий анализ для оптимального тайминга повторений и удержания.</li>
+        </ul>
+      </div>
+
+      <div class="tab-content" id="masshtab">
+        <h3>3. Масштабирование</h3>
+        <ul>
+          <li>Добавление новых предметов по аналогии (физика, история и т.п.).</li>
+          <li>Переход с локальных эвристик на серверные модели и языковые модели (например, GPT для эссе и объяснений).</li>
+          <li>Профили пользователей: объединённый прогресс по всем предметам.</li>
+          <li>Интеграция в школьные системы и персональные учебные планы.</li>
+          <li>Расширение: поддержка учителей, групповых занятий, отчёты.</li>
+        </ul>
+      </div>
+
+      <div class="tab-content" id="budushee">
+        <h3>4. Будущие исследования</h3>
+        <ul>
+          <li>Оптимизация повторения с учётом забывания (spaced repetition) по предметам.</li>
+          <li>Автоматическая оценка свободного текста и построение контекстных подсказок.</li>
+          <li>Мультипредметные зависимости: как успехи в одном предмете влияют на другой.</li>
+          <li>Гибкая геймификация под мотивационные профили учеников.</li>
+          <li>Интеграция адаптивного расписания подготовки к экзаменам.</li>
+        </ul>
+      </div>
+
+      <div class="tab-content" id="polzovateli">
+        <h3>5. Целевые пользователи</h3>
+        <ul>
+          <li>Школьники, сдающие экзамены по английскому и математике.</li>
+          <li>Кандидаты на международные тесты и олимпиадники.</li>
+          <li>Репетиторы, комбинирующие работу по разным предметам.</li>
+          <li>Школы и образовательные центры, ищущие адаптивные инструменты.</li>
+        </ul>
+      </div>
+
+      <div class="tab-content" id="technologii">
+        <h3>6. Обоснование выбора технологий</h3>
+        <ul>
+          <li>HTML/CSS/JS — быстрое прототипирование, легко демонстрировать и тестировать.</li>
+          <li>Эвристические слои + последующее подключение ИИ: постепенное усложнение.</li>
+          <li>LLM (например, GPT) для анализа эссе и объяснений, отдельные модели или правила для математики.</li>
+          <li>Облачное хранилище прогресса, REST API, аналитика, персональные рекомендации.</li>
+          <li>Возможность разделения нагрузок: фронт, бэкенд, рекомендуемый движок, модельная оценка.</li>
+        </ul>
+      </div>
+      <div class="tab-content" id="kreativ">
+        <h3>7. Креативные элементы</h3>
+        <ul>
+          <li>Объединённый дашборд по предметам с сильными/слабыми сторонами.</li>
+          <li>Персональные «планы повторения» с приоритетами (математика vs язык) в зависимости от цели.</li>
+          <li>Мультиязычный интерфейс, адаптация под язык обучения.</li>
+          <li>Режим «экзамен симуляция» объединяющий задания из разных дисциплин.</li>
+        </ul>
+      </div>
+
+      <div class="tab-content" id="komanda">
+        <h3>8. Роли команды</h3>
+        <div class="role-grid">
+          <div class="card" style="padding:12px;">
+            <strong>Веб-сат: Айбар</strong>
+            <div class="small">Фронтенд, интеграция тестов, связка между предметами.</div>
+          </div>
+          <div class="card" style="padding:12px;">
+            <strong>ИИ-интегратор: Дильмухмед</strong>
+            <div class="small">Подключение языковых моделей, создание тг-бота, API.</div>
+          </div>
+          <div class="card" style="padding:12px;">
+            <strong>Дизайнер: Диар</strong>
+            <div class="small">Презентация, исследование поведения, адаптивность, геймификация.</div>
+          </div>
+          <div class="card" style="padding:12px;">
+            <strong>Аналитики: Алихан, Шынгысхан </strong>
+            <div class="small">Метрики, A/B тестирование, оптимизация плана обучения.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="metrics">
+        <h3>9. Метрики успеха</h3>
+        <ul>
+          <li>Повышение баллов по каждому предмету.</li>
+          <li>Сокращение повторяющихся ошибок.</li>
+          <li>Удержание (повторные сессии).</li>
+          <li>Скорость достижения цели.</li>
+          <li>Удовлетворённость и ясность объяснений.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Практика -->
+    <div class="card">
+      <h2>Практика: тесты и рекомендации</h2>
+      <div class="small">Выбирай предмет и тип — получай адаптивные задания и объяснения.</div>
+
+      <div class="flex" style="gap:2rem;">
+        <div style="flex:1; min-width:260px;">
+          <div class="card" style="padding:12px;">
+            <h3 style="margin:0;">Рекомендации</h3>
+            <div class="small">Исходя из твоих последних результатов по предметам.</div>
+            <div id="recommendations-list" style="margin:8px 0;"></div>
+            <button id="refresh-recs">Обновить</button>
+          </div>
+        </div>
+        <div style="flex:2; min-width:320px;">
+          <div class="card" style="padding:12px;">
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
+              <div>
+                <h3 style="margin:0;">Прогресс</h3>
+                <div class="small">Сводка по предметам.</div>
+              </div>
+              <div style="min-width:180px;">
+                <div>Общий балл: <strong id="overall-score">—</strong></div>
+                <div class="progress-bar">
+                  <div class="progress-inner" id="progress-inner"></div>
+                </div>
+                <div class="small">Тестов пройдено: <span id="tests-taken">0</span></div>
+              </div>
+            </div>
+            <div style="margin-top:10px;">
+              <div><strong>Сильные:</strong> <span id="strengths">—</span></div>
+              <div><strong>Нужно прокачать:</strong> <span id="weaknesses">—</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Настройки теста -->
+      <div class="card">
+        <h3 style="margin-top:0;">Новый тест</h3>
+        <div class="small">Выбери предмет и тип задания.</div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px;">
+          <div style="flex:1; min-width:160px;">
+            <label>Предмет</label>
+            <div class="subject-switch">
+              <div class="subject-btn active" data-subject="english">Английский</div>
+              <div class="subject-btn" data-subject="math">Математика</div>
+            </div>
+          </div>
+          <div style="flex:1; min-width:160px;">
+            <label>Тип</label>
+            <select id="test-type">
+              <option value="grammar">Грамматика (англ.)</option>
+              <option value="vocab">Словарный запас (англ.)</option>
+              <option value="writing">Эссе (англ.)</option>
+              <option value="math-mc">Математика: выбор (5 вопросов)</option>
+              <option value="math-short">Математика: короткие ответы (3 задачи)</option>
+            </select>
+          </div>
+          <div style="flex:0 0 140px; display:flex; align-items:flex-end;">
+            <button id="start-test">Начать</button>
+          </div>
+        </div>
+        <div id="test-area" style="margin-top:14px;"></div>
+      </div>
+      <!-- Разбор -->
+      <div class="card">
+        <h3 style="margin-top:0;">Последний тест — разбор</h3>
+        <div id="last-test-summary">
+          <em>Ещё не было ни одного прохождения.</em>
+        </div>
+      </div>
+    </div>
+    <footer>
+      Прототип создан Айбаром. Дальнейшее развитие: реальные ИИ-модели, объединённое хранение прогресса, адаптивные планы по нескольким предметам, экспорт и интеграции.
+    </footer>
+  </div>
+  <script>
+    document.querySelectorAll(".tab").forEach(t => {
+      t.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(o => o.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        t.classList.add("active");
+        const id = t.dataset.tab;
+        document.getElementById(id).classList.add("active");
+      });
+    });
+    let currentSubject = "english";
+    document.querySelectorAll(".subject-btn").forEach(b => {
+      b.addEventListener("click", () => {
+        document.querySelectorAll(".subject-btn").forEach(x => x.classList.remove("active"));
+        b.classList.add("active");
+        currentSubject = b.dataset.subject;
+      });
+    });
+    // набор вопросов
+    const sampleQuestions = {
+      grammar: [
+        { q: "She _____ to school every day.", options: ["go", "goes", "going", "gone"], answer: "goes", explanation: "Для третьего лица единственного числа в Present Simple добавляется -s." },
+        { q: "If I _____ time, I would help you.", options: ["have", "had", "will have", "would have"], answer: "had", explanation: "Условное второго типа: If + past, would + base." },
+        { q: "They _____ already finished their homework.", options: ["has", "have", "had", "having"], answer: "have", explanation: "Present Perfect для 'they' — have." },
+        { q: "He _____ playing football when I saw him.", options: ["was", "is", "wasn't", "were"], answer: "was", explanation: "Past Continuous: действие было в процессе." },
+        { q: "By next week she _____ the book.", options: ["reads", "will read", "will have read", "read"], answer: "will have read", explanation: "Future Perfect показывает завершение к моменту в будущем." }
+      ],
+      vocab: [
+        { q: "Что означает слово 'abundant'?", options: ["Редкий", "Избыточный", "Обильный", "Слабый"], answer: "Обильный", explanation: "'Abundant' = обильный." },
+        { q: "Выбери синоним к 'happy':", options: ["Sad", "Joyful", "Angry", "Tired"], answer: "Joyful", explanation: "Joyful = радостный." },
+        { q: "Что означает 'to evaluate'?", options: ["Игнорировать", "Оценивать", "Скрывать", "Ускорять"], answer: "Оценивать", explanation: "Evaluate — оценивать." },
+        { q: "Выбери антоним к 'complicated':", options: ["Simple", "Hard", "Large", "Heavy"], answer: "Simple", explanation: "'Complicated' — сложный, противоположный 'simple'." },
+        { q: "Что означает слово 'reliable'?", options: ["Надёжный", "Опасный", "Тяжёлый", "Медленный"], answer: "Надёжный", explanation: "Reliable — тот, на кого можно положиться." }
+      ],
+      writing: [
+        {
+          q: "Напиши короткое (3-5 предложений) эссе на тему: 'Why learning English is important.'",
+          modelAnswer: "Learning English is important because it opens global opportunities. It helps in communication with people from different countries. It also improves access to educational and professional resources.",
+          explanation: "Оценивается структура, идеи, ключевые слова и связки."
+        }
+      ],
+       math_mc: [
+      {
+        q: "Реши систему: { x + y = 10, 2x - y = 2 }. Чему равны x и y?",
+        options: ["x=3, y=7", "x=4, y=6", "x=5, y=5", "x=6, y=4"],
+        answer: "x=4, y=6",
+        explanation: "Добавим: (x+y)+(2x−y)=10+2 → 3x=12 → x=4 , следовательно 2*4-y=2 , y=6)"
+      },
+      {
+        q: "Чему равна сумма корней квадратного уравнения x² - 5x + 6 = 0?",
+        options: ["5", "6", "−5", "1"],
+        answer: "5",
+        explanation: "Сумма корней по формуле: S = 5 (коэффициент с противоположным знаком)."
+      },
+      {
+        q: "Процентное изменение: число увеличилось с 50 до 65. Насколько процентов выросло?",
+        options: ["25%", "30%", "15%", "20%"],
+        answer: "30%",
+        explanation: "Увеличение 15 из 50 = 15/50 = 0.3 = 30%."
+      },
+      {
+        q: "Комбинаторика: Сколько разных слов можно составить из букв 'A', 'B', 'C' длины 3, если буквы можно повторять?",
+        options: ["6", "9", "27", "18"],
+        answer: "27",
+        explanation: "3^3 = 27 вариантов (повторения разрешены)."
+      },
+      {
+        q: "Если 3^x = 81, то x = ?",
+        options: ["3", "4", "2", "5"],
+        answer: "4",
+        explanation: "81 = 3^4, значит x=4."
+      }
+    ],
+    math_short: [
+      {
+        q: "Реши квадратное уравнение: x² - 7x + 10 = 0. Найди корни.(напиши ответ в порядке возрастания через 'и') ",
+        answer: "2 и 5",
+        explanation: "x² -7x +10 = (x-2)(x-5)=0 → x=2 или x=5."
+      },
+      {
+        q: "В треугольнике один угол 90°, другой 30°. Найди отношение длин противолежащего 30° к гипотенузе (в виде дроби).",
+        answer: "1/2",
+        explanation: "sin(30°)=1/2, значит противолежащий к 30° = половина гипотенузы."
+      },
+      {
+        q: "Из 120 учеников 25% занимаются спортом. Сколько учеников не занимаются спортом?",
+        answer: "90",
+        explanation: "25% от 120 = 30 занимаются, значит 120−30=90 не занимаются."
+      }
+    ]
+  };
+    let history = [];
+    function pickRandom(arr, n) {
+      const copy = arr.slice();
+      for (let i = copy.length -1; i>0; i--) {
+        const j = Math.floor(Math.random()*(i+1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy.slice(0,n);
+    }
+    function updateDashboard() {
+      document.getElementById("tests-taken").textContent = history.length;
+      if (!history.length) return;
+      let totalScore = 0;
+      let count = 0;
+      let subjStrengths = {};
+      let subjWeaknesses = {};
+      history.forEach(item => {
+        if (item.type === "grammar" || item.type === "vocab") {
+          const perc = (item.score.correct / item.score.total)*100;
+          totalScore += perc;
+          count++;
+          if (!subjStrengths.english) subjStrengths.english = { correct:0, total:0 };
+          if (item.type === "grammar") {
+            subjStrengths.english.correct = subjStrengths.english.correct || 0;
+            subjStrengths.english.total = subjStrengths.english.total || 0;
+            subjStrengths.english.correct += item.score.correct;
+            subjStrengths.english.total += item.score.total;
+          }
+          if (item.type === "vocab") {
+            subjStrengths.english.correct = subjStrengths.english.correct || 0;
+            subjStrengths.english.total = subjStrengths.english.total || 0;
+            subjStrengths.english.correct += item.score.correct;
+            subjStrengths.english.total += item.score.total;
+          }
+        } else if (item.type === "writing") {
+          totalScore += item.score;
+          count++;
+          subjStrengths.english = subjStrengths.english || { correct:0, total:0 };
+        } else if (item.type.startsWith("math")) {
+          if (item.type === "math-mc") {
+            const perc = (item.score.correct / item.score.total)*100;
+            totalScore += perc;
+            count++;
+            subjStrengths.math = subjStrengths.math || { correct:0, total:0 };
+            subjStrengths.math.correct += item.score.correct;
+            subjStrengths.math.total += item.score.total;
+          } else if (item.type === "math-short") {
+            totalScore += item.score;
+            count++;
+            subjStrengths.math = subjStrengths.math || { correct:0, total:0 };
+          }
+        }
+      });
+      const avg = Math.round(totalScore / count);
+      document.getElementById("overall-score").textContent = avg + "%";
+      document.getElementById("progress-inner").style.width = avg + "%";
+
+      const strengths = [];
+      const weaknesses = [];
+
+      if (subjStrengths.english) {
+        const p = Math.round((subjStrengths.english.correct / subjStrengths.english.total)*100);
+        if (p >= 75) strengths.push("Английский"); else weaknesses.push("Английский");
+      }
+      if (subjStrengths.math) {
+        const p = subjStrengths.math.total ? Math.round((subjStrengths.math.correct / subjStrengths.math.total)*100) : 0;
+        if (p >= 75) strengths.push("Математика"); else weaknesses.push("Математика");
+      }
+      document.getElementById("strengths").textContent = strengths.length ? strengths.join(", ") : "—";
+      document.getElementById("weaknesses").textContent = weaknesses.length ? weaknesses.join(", ") : "—";
+
+      renderLastTestSummary(history[history.length -1]);
+    }
+    function startTest(type) {
+      const area = document.getElementById("test-area");
+      area.innerHTML = "";
+      if (type === "grammar" || type === "vocab") {
+        const pool = sampleQuestions[type];
+        const chosen = pickRandom(pool, 5);
+        const form = document.createElement("div");
+        chosen.forEach((q,i) => {
+          const block = document.createElement("div");
+          block.className = "question-block";
+          block.innerHTML = `<div><strong>Вопрос ${i+1}:</strong> ${q.q}</div>`;
+          const opts = document.createElement("div");
+          q.options.forEach(opt => {
+            const label = document.createElement("label");
+            label.style.display="block";
+            label.innerHTML = `<input type="radio" name="q${i}" value="${opt}" /> ${opt}`;
+            opts.appendChild(label);
+          });
+          block.appendChild(opts);
+          form.appendChild(block);
+        });
+        const submit = document.createElement("button");
+        submit.textContent = "Сдать тест";
+        submit.style.marginTop = "8px";
+        submit.addEventListener("click", () => {
+          let correct=0;
+          const details=[];
+          chosen.forEach((q,i) => {
+            const sel = document.querySelector(`input[name=q${i}]:checked`);
+            const given = sel ? sel.value : "(нет ответа)";
+            const ok = given === q.answer;
+            if (ok) correct++;
+            details.push({ q: q.q, given, answer: q.answer, ok, explanation: q.explanation });
+          });
+          history.push({ type, score: { correct, total: chosen.length }, details });
+          updateDashboard();
+          renderRecommendations();
+        });
+        form.appendChild(submit);
+        area.appendChild(form);
+      } else if (type === "writing") {
+        const q = sampleQuestions.writing[0];
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = `
+          <div class="question-block">
+            <div><strong>Задание:</strong> ${q.q}</div>
+            <div style="margin-top:6px;">
+              <textarea id="writing-answer" rows="6" placeholder="Напиши своё эссе..."></textarea>
+            </div>
+          </div>
+        `;
+        const submit = document.createElement("button");
+        submit.textContent = "Оценить эссе";
+        submit.addEventListener("click", () => {
+          const your = document.getElementById("writing-answer").value.trim();
+          if (!your) { alert("Нужно написать текст."); return; }
+          let score=0;
+          const lenRatio = Math.min(1, your.split(" ").length / q.modelAnswer.split(" ").length);
+          score += lenRatio * 40;
+          const keywords = ["learning","english","communication","opportunities","global"];
+          let matches=0;
+          const low=your.toLowerCase();
+          keywords.forEach(k=>{ if (low.includes(k)) matches++;});
+          score += Math.min(5,matches)*12;
+          score = Math.round(Math.min(100, score));
+          history.push({ type, score, yourAnswer: your, modelAnswer: q.modelAnswer, explanation: q.explanation });
+          updateDashboard();
+          renderRecommendations();
+        });
+        wrapper.appendChild(submit);
+        area.appendChild(wrapper);
+      } else if (type === "math-mc") {
+        const pool = sampleQuestions.math_mc;
+        const chosen = pickRandom(pool, 5);
+        const form = document.createElement("div");
+        chosen.forEach((q,i) => {
+          const block = document.createElement("div");
+          block.className = "question-block";
+          block.innerHTML = `<div><strong>Вопрос ${i+1}:</strong> ${q.q}</div>`;
+          const opts = document.createElement("div");
+          q.options.forEach(opt => {
+            const label = document.createElement("label");
+            label.style.display="block";
+            label.innerHTML = `<input type="radio" name="mq${i}" value="${opt}" /> ${opt}`;
+            opts.appendChild(label);
+          });
+          block.appendChild(opts);
+          form.appendChild(block);
+        });
+        const submit = document.createElement("button");
+        submit.textContent = "Сдать тест";
+        submit.style.marginTop = "8px";
+        submit.addEventListener("click", () => {
+          let correct=0;
+          const details=[];
+          chosen.forEach((q,i) => {
+            const sel = document.querySelector(`input[name=mq${i}]:checked`);
+            const given = sel ? sel.value : "(нет ответа)";
+            const ok = given === q.answer;
+            if (ok) correct++;
+            details.push({ q: q.q, given, answer: q.answer, ok, explanation: q.explanation });
+          });
+          history.push({ type: "math-mc", score: { correct, total: chosen.length }, details });
+          updateDashboard();
+          renderRecommendations();
+        });
+        form.appendChild(submit);
+        area.appendChild(form);
+      } else if (type === "math-short") {
+        const pool = sampleQuestions.math_short;
+        const chosen = pickRandom(pool, 3);
+        const form = document.createElement("div");
+        chosen.forEach((q,i) => {
+          const block = document.createElement("div");
+          block.className = "question-block";
+          block.innerHTML = `<div><strong>Задача ${i+1}:</strong> ${q.q}</div>
+            <div style="margin-top:4px;">
+              <input type="text" name="ms${i}" placeholder="Твой ответ">
+            </div>`;
+          form.appendChild(block);
+        });
+        const submit = document.createElement("button");
+        submit.textContent = "Проверить";
+        submit.style.marginTop="8px";
+        submit.addEventListener("click", () => {
+          let score=0;
+          const details=[];
+          chosen.forEach((q,i) => {
+            const inp = document.querySelector(`input[name=ms${i}]`);
+            const given = inp ? inp.value.trim() : "";
+            const ok = given === q.answer;
+            if (ok) score += 33; // примерное распределение 3 задач ~100
+            details.push({ q: q.q, given: given || "(нет)", answer: q.answer, ok, explanation: q.explanation });
+          });
+          score = Math.min(100, Math.round(score));
+          history.push({ type: "math-short", score, details });
+          updateDashboard();
+          renderRecommendations();
+        });
+        form.appendChild(submit);
+        area.appendChild(form);
+      }
+    }
+    function escapeHtml(text) {
+      return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+    function renderLastTestSummary(test) {
+      const container = document.getElementById("last-test-summary");
+      container.innerHTML = "";
+      const title = document.createElement("div");
+      title.innerHTML = `<strong>Тип:</strong> ${test.type}`;
+      container.appendChild(title);
+
+      if (test.type === "grammar" || test.type === "vocab" || test.type === "math-mc") {
+        const percent = Math.round((test.score.correct / test.score.total)*100);
+        const scoreDiv = document.createElement("div");
+        scoreDiv.innerHTML = `<strong>Результат:</strong> ${test.score.correct} / ${test.score.total} (${percent}%)`;
+        container.appendChild(scoreDiv);
+        test.details.forEach(d => {
+          const block = document.createElement("div");
+          block.className = "question-block";
+          block.innerHTML = `
+            <div><strong>Вопрос:</strong> ${d.q}</div>
+            <div><strong>Твой ответ:</strong> ${d.given}</div>
+            <div><strong>Правильный:</strong> ${d.answer}</div>
+          `;
+          if (!d.ok) {
+            const expl = document.createElement("div");
+            expl.className = "explanation";
+            expl.innerHTML = `<div><strong>Пояснение:</strong> ${d.explanation}</div>`;
+            block.appendChild(expl);
+          }
+          container.appendChild(block);
+        });
+      } else if (test.type === "writing") {
+        const scoreDiv = document.createElement("div");
+        scoreDiv.innerHTML = `<strong>Оценка (эвристика):</strong> ${test.score}%`;
+        container.appendChild(scoreDiv);
+        const your = document.createElement("div");
+        your.innerHTML = `<div><strong>Твоё эссе:</strong><pre style="white-space:pre-wrap;">${escapeHtml(test.yourAnswer)}</pre></div>`;
+        container.appendChild(your);
+        const model = document.createElement("div");
+        model.innerHTML = `<div><strong>Модельный ответ:</strong><pre style="white-space:pre-wrap;">${test.modelAnswer}</pre></div>`;
+        container.appendChild(model);
+        const ex = document.createElement("div");
+        ex.className="explanation";
+        ex.innerHTML = `<div><strong>Пояснение:</strong> ${test.explanation}</div>`;
+        container.appendChild(ex);
+      } else if (test.type === "math-short") {
+        const scoreDiv = document.createElement("div");
+        scoreDiv.innerHTML = `<strong>Оценка (эвристика):</strong> ${test.score}%`;
+        container.appendChild(scoreDiv);
+        test.details.forEach(d => {
+          const block = document.createElement("div");
+          block.className="question-block";
+          block.innerHTML = `
+            <div><strong>Задача:</strong> ${d.q}</div>
+            <div><strong>Твой ответ:</strong> ${d.given}</div>
+            <div><strong>Правильный:</strong> ${d.answer}</div>
+          `;
+          if (!d.ok) {
+            const expl = document.createElement("div");
+            expl.className="explanation";
+            expl.innerHTML = `<div><strong>Пояснение:</strong> ${d.explanation}</div>`;
+            block.appendChild(expl);
+          }
+          container.appendChild(block);
+        });
+      }
+    }
+    function generateRecommendations() {
+      const recs = [];
+      // анализ последних по предметам
+      const latestBySubject = {};
+      for (let i = history.length-1; i>=0; i--) {
+        const it = history[i];
+        if (it.type.startsWith("math") && !latestBySubject.math) latestBySubject.math = it;
+        if ((it.type === "grammar" || it.type==="vocab" || it.type==="writing") && !latestBySubject.english) latestBySubject.english = it;
+      }
+      if (latestBySubject.english) {
+        // если слабая английская часть
+        let scoreEng = 0;
+        if (latestBySubject.english.type === "writing") scoreEng = latestBySubject.english.score;
+        else scoreEng = (latestBySubject.english.score.correct / latestBySubject.english.score.total)*100;
+        if (scoreEng < 70) {
+          recs.push({ title: "Повтори базовые темы по английскому", desc: "Пройди ещё один тест на грамматику и лексикон, фокусируясь на ошибках.", tag: "Английский" });
+        } else {
+          recs.push({ title: "Укрепи стиль", desc: "Попробуй написать эссе более формально, добавив переходы.", tag: "Английский" });
+        }
+      }
+      if (latestBySubject.math) {
+        let scoreMath = 0;
+        if (latestBySubject.math.type === "math-short") scoreMath = latestBySubject.math.score;
+        else scoreMath = (latestBySubject.math.score.correct / latestBySubject.math.score.total)*100;
+        if (scoreMath < 75) {
+          recs.push({ title: "Повтори ключевые концепции математики", desc: "Сфокусируйся на тех темах, где были ошибки (алгебра или арифметика).", tag: "Математика" });
+        } else {
+          recs.push({ title: "Усложни задачи", desc: "Добавь задачи с двумя шагами рассуждения.", tag: "Математика" });
+        }
+      }
+      if (!recs.length) {
+        recs.push({ title: "Начни тестирование", desc: "Пройди первый тест по предмету, чтобы получить персональные рекомендации.", tag: "Общее" });
+      }
+      return recs.slice(0,4);
+    }
+    function renderRecommendations() {
+      const container = document.getElementById("recommendations-list");
+      container.innerHTML = "";
+      const recs = generateRecommendations();
+      recs.forEach(r => {
+        const d = document.createElement("div");
+        d.style.marginBottom="10px";
+        d.innerHTML = `<div><strong>${r.title}</strong> <span class="pill">${r.tag}</span></div><div class="small">${r.desc}</div>`;
+        container.appendChild(d);
+      });
+    }
+    document.getElementById("start-test").addEventListener("click", () => {
+      const type = document.getElementById("test-type").value;
+      startTest(type);
+    });
+    document.getElementById("refresh-recs").addEventListener("click", () => {
+      renderRecommendations();
+    });
+    updateDashboard();
+    renderRecommendations();
+  </script>
+</body>
+</html>
