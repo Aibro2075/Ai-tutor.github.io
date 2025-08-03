@@ -1,4 +1,3 @@
-# Aibro2075.github.io
 Web-site about Ai-tutor
 <!DOCTYPE html>
 <html lang="ru">
@@ -767,6 +766,7 @@ Web-site about Ai-tutor
         });
       }
     }
+
     function generateRecommendations() {
       const recs = [];
       // анализ последних по предметам
