@@ -170,6 +170,26 @@ Web-site about Ai-tutor
     @media (max-width:950px){
       header {flex-direction:column; align-items:flex-start;}
     }
+
+    /* ====== Добавлено: стили для бургер-меню и мобильного навигационного поведения (не заменяют твой код, только дополняют) ====== */
+    .main-nav { display:flex; gap:10px; align-items:center; }
+    .main-nav a { color: #fff; text-decoration: none; font-weight:600; padding:6px 10px; border-radius:8px; background: rgba(255,255,255,0.06); }
+    .burger { display:none; background:transparent; border:none; padding:6px; cursor:pointer; align-items:center; justify-content:center; }
+    .burger .burger-line { display:block; width:20px; height:2px; background:#fff; margin:3px 0; border-radius:2px; }
+
+    @media (max-width:800px) {
+      /* на узких экранах спрячем строку ссылок и покажем выпадающее меню */
+      .main-nav { display:none; position:absolute; top:84px; right:12px; background:#fff; color:#1f2d3a; border-radius:10px; box-shadow: var(--shadow); flex-direction:column; padding:8px; min-width:160px; z-index:999; }
+      .main-nav a { color:#1f2d3a; background:transparent; padding:8px 10px; border-radius:6px; }
+      .main-nav.show { display:flex; }
+      .burger { display:inline-flex; }
+      /* переопределение inline min-width-ов только на маленьких экранах (не удаляет их, а временно переопределяет) */
+      [style*="min-width"] { min-width: auto !important; }
+      /* небольшие дополнительные подстройки */
+      header { align-items:flex-start; }
+      .container { padding: 1rem; }
+      .card { padding: 0.9rem 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -183,6 +203,23 @@ Web-site about Ai-tutor
       <div class="badge">Экзамены / Подготовка</div>
       <div class="badge">Прототип</div>
     </div>
+
+    <!-- ДОБАВЛЕНО: навигация и бургер (вставлено без удаления/изменения остального содержимого) -->
+    <div class="header-controls" style="display:flex;align-items:center;gap:12px;">
+      <nav id="main-nav" aria-label="Главное меню" class="main-nav">
+        <a href="#problematika">Проблематика</a>
+        <a href="#metody">Методы</a>
+        <a href="#masshtab">Масштабирование</a>
+        <a href="#polzovateli">Пользователи</a>
+        <a href="#technologii">Технологии</a>
+      </nav>
+      <button id="burger" class="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="main-nav">
+        <span class="burger-line" aria-hidden="true"></span>
+        <span class="burger-line" aria-hidden="true"></span>
+        <span class="burger-line" aria-hidden="true"></span>
+      </button>
+    </div>
+    <!-- /добавлено -->
   </header>
 
   <div class="container">
@@ -823,6 +860,33 @@ Web-site about Ai-tutor
     });
     updateDashboard();
     renderRecommendations();
+
+    /* ====== Добавлено: JS для управления бургер-меню (не изменяет остальной код) ====== */
+    (function(){
+      const burger = document.getElementById('burger');
+      const nav = document.getElementById('main-nav');
+      if (!burger || !nav) return;
+      burger.addEventListener('click', function(e){
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', String(!expanded));
+        nav.classList.toggle('show');
+      });
+      // Закрывать меню при клике вне
+      document.addEventListener('click', function(e){
+        if (!nav.classList.contains('show')) return;
+        if (!nav.contains(e.target) && !burger.contains(e.target)) {
+          nav.classList.remove('show');
+          burger.setAttribute('aria-expanded','false');
+        }
+      });
+      // Закрывать по Esc
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') {
+          nav.classList.remove('show');
+          burger.setAttribute('aria-expanded','false');
+        }
+      });
+    })();
   </script>
 </body>
 </html>
