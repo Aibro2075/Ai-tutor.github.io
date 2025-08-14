@@ -1,8 +1,3 @@
-Web-site about Ai-tutor
-
-
-
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
